@@ -68,10 +68,12 @@ window.onload = function() {
             const data = await response.json();
             const landscapeImages = data.filter(photo => photo.width > photo.height);
             const imageUrls = landscapeImages.map(photo => photo.urls.full + '&w=' + width + '&h=' + height);
+            document.getElementById('apiParams').classList.remove('error');
             return imageUrls;
         } 
         catch (error) {
             console.error('Error fetching images:', error);
+            document.getElementById('apiParams').classList.add('error');
             return [];
         }
     }
@@ -115,28 +117,30 @@ window.onload = function() {
 
     function initPiece(idx, toX, toY) {
         const onePiece = document.getElementById('piece-' + idx.toString());
-        const fromX = parseInt(onePiece.style.left);
-        const fromY = parseInt(onePiece.style.top);
-        onePiece.style.zIndex = idx;
-        movePiece(onePiece, fromX, fromY, toX, toY, steps, 0, function() {
-            if (idx == ROWS * COLUMNS - 1) {
-                var shuffled = [];
-                for (var i = 0; i < ROWS * COLUMNS; i++) {
-                    do {
-                        const randomIdx = Math.floor(Math.random() * ROWS * COLUMNS);
-                        if (shuffled.indexOf(randomIdx) === -1) {
-                            shuffled.push(randomIdx);
+        if (onePiece) {
+            const fromX = parseInt(onePiece.style.left);
+            const fromY = parseInt(onePiece.style.top);
+            onePiece.style.zIndex = idx;
+            movePiece(onePiece, fromX, fromY, toX, toY, steps, 0, function() {
+                if (idx == ROWS * COLUMNS - 1) {
+                    var shuffled = [];
+                    for (var i = 0; i < ROWS * COLUMNS; i++) {
+                        do {
+                            const randomIdx = Math.floor(Math.random() * ROWS * COLUMNS);
+                            if (shuffled.indexOf(randomIdx) === -1) {
+                                shuffled.push(randomIdx);
+                            }
                         }
+                        while (shuffled.length < ROWS * COLUMNS);
                     }
-                    while (shuffled.length < ROWS * COLUMNS);
+                    idx = 0;
+                    setTimeout(function() {
+                        groupToCorner(idx, shuffled);
+                    }, delay);
                 }
-                idx = 0;
-                setTimeout(function() {
-                    groupToCorner(idx, shuffled);
-                }, delay);
-            }
-        });
-        positions[idx] = { fromX: fromX, fromY: fromY, toX: toX, toY: toY };
+            });
+            positions[idx] = { fromX: fromX, fromY: fromY, toX: toX, toY: toY };    
+        }
     }
 
     function movePiece(element, fromX, fromY, toX, toY, steps, step, callback) {
@@ -160,14 +164,16 @@ window.onload = function() {
     function groupToCorner(idx, items) {
         if (idx < items.length) {
             const onePiece = document.getElementById('piece-' + items[idx].toString());
-            const fromX = parseInt(onePiece.style.left);
-            const fromY = parseInt(onePiece.style.top);
-            const toX = SCREEN_WIDTH - PIECE_SIZE - 2 * idx - 2 * BORDER;
-            const toY = SCREEN_HEIGHT - PIECE_SIZE - 2 * idx - 2 * BORDER;
-            onePiece.style.zIndex = items.length - idx;
-            movePiece(onePiece, fromX, fromY, toX, toY, steps / 10, 0, function() {
-                groupToCorner(idx + 1, items);
-            });
+            if (onePiece) {
+                const fromX = parseInt(onePiece.style.left);
+                const fromY = parseInt(onePiece.style.top);
+                const toX = SCREEN_WIDTH - PIECE_SIZE - 2 * idx - 2 * BORDER;
+                const toY = SCREEN_HEIGHT - PIECE_SIZE - 2 * idx - 2 * BORDER;
+                onePiece.style.zIndex = items.length - idx;
+                movePiece(onePiece, fromX, fromY, toX, toY, steps / 10, 0, function() {
+                    groupToCorner(idx + 1, items);
+                });    
+            }
         }
         else {
             idx = 0;
@@ -180,14 +186,16 @@ window.onload = function() {
     function restorePicture(idx, items) {
         if (idx < items.length) {
             const onePiece = document.getElementById('piece-' + items[idx].toString());
-            const fromX = parseInt(onePiece.style.left);
-            const fromY = parseInt(onePiece.style.top);
-            const toX = positions[items[idx]].fromX;
-            const toY = positions[items[idx]].fromY;
-            onePiece.style.zIndex = items.length + idx;
-            movePiece(onePiece, fromX, fromY, toX, toY, steps / 10, 0, function() {
-                restorePicture(idx + 1, items);
-            });
+            if (onePiece) {
+                const fromX = parseInt(onePiece.style.left);
+                const fromY = parseInt(onePiece.style.top);
+                const toX = positions[items[idx]].fromX;
+                const toY = positions[items[idx]].fromY;
+                onePiece.style.zIndex = items.length + idx;
+                movePiece(onePiece, fromX, fromY, toX, toY, steps / 10, 0, function() {
+                    restorePicture(idx + 1, items);
+                });    
+            }
         }
         else {
             setTimeout(function() {
