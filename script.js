@@ -15,27 +15,66 @@ window.onload = function() {
     const SCREEN_HEIGHT = window.innerHeight;
     const BORDER = 8;
 
-    const slideNames = [
-        'https://images.unsplash.com/photo-1548919973-5cef591cdbc9?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1444723121867-7a241cacace9?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1547537352-ae90c682877e?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1507876466758-bc54f384809c?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1493540447904-49763eecf55f?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1541423408854-5df732b6f6d1?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1611416457332-946853cc75d6?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1492086517200-9393d4eb53bf?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1513622790541-eaa84d356909?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1540542134-b61d688f1441?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1571951103752-53c15cad28e5?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1569001178320-92c99c3f1a25?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1500632907344-a073709b2448?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1609738394507-57348ec4e540?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1614221330834-9399e5631af3?q=80&w=1900&h=1000&auto=format&fit=contain&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    ];
+    var slideNames = [];
 
-    slideName = slideNames[slideId];
-    getPiece(slideName, PIECE_SIZE, ROWS, COLUMNS, idx);
+    var accessKey, query;
+
+    const count = 10;
+    const width = 1900;
+    const height = 1000;
+    const quality = 'full';
+    const fit = 'crop';
+
+    const openParams = document.getElementById('openParams');
+    openParams.addEventListener('click', function() {
+        document.getElementById('apiParams').classList.remove('invisible');
+    });
+
+    const runButton = document.getElementById('run-query');
+    runButton.addEventListener('click', function() {
+        const apiKey = document.getElementById('api-key').value;
+        const apiQuery = document.getElementById('api-query').value;
+        accessKey = apiKey;
+        query = apiQuery;
+        const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${accessKey}&count=${count}&query=${query}&w=${width}&h=${height}&quality=${quality}&fit=${fit}`;
+        fetchImages(apiUrl).then(imageUrls => {
+            idx = 0;
+            slideId = 0;
+            slideNames = [];
+            for (var i = 0; i < imageUrls.length; i++) {
+                slideNames.push(imageUrls[i]);
+            }
+            var parentElement = document.getElementById('imagePiece');
+            while (parentElement.firstChild) {
+                parentElement.removeChild(parentElement.firstChild);
+            }
+            slideName = slideNames[slideId];
+            getPiece(slideName, PIECE_SIZE, ROWS, COLUMNS, idx);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });    
+        document.getElementById('apiParams').classList.add('invisible');
+    });
+
+    const cancelButton = document.getElementById('close-box');
+    cancelButton.addEventListener('click', function() {
+        document.getElementById('apiParams').classList.add('invisible');
+    });
+
+    async function fetchImages(apiUrl) {
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            const landscapeImages = data.filter(photo => photo.width > photo.height);
+            const imageUrls = landscapeImages.map(photo => photo.urls.full + '&w=' + width + '&h=' + height);
+            return imageUrls;
+        } 
+        catch (error) {
+            console.error('Error fetching images:', error);
+            return [];
+        }
+    }
 
     function getImagePiece(imageSrc, id, x, y, width, height, callback) {
         var img = new Image();  

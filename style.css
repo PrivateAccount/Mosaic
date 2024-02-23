@@ -15,3 +15,48 @@ body {
     padding: 0;
     background-repeat: no-repeat;
 }
+#apiParams {
+    background-color: white;
+    border: 2px solid #666;
+    border-radius: 5px;
+    margin: calc(50vh - 100px) auto 0 auto;
+    padding: 1em;
+    width: 500px;
+    position: relative;
+    z-index: 1000;
+}
+#apiParams.invisible {
+    display: none;
+}
+.section {
+    margin: 10px 0;
+}
+.section label {
+    margin: 5px 0 0 0;
+    display: inline-block;
+    width: 150px;
+}
+.section input[type="text"] {
+    width: 328px;
+}
+.action {
+    text-align: right;
+}
+.action button {
+    text-align: center;
+    width: 100px;
+    margin: 10px;
+    padding: 5px;
+}
+#openParams {
+    background-color: white;
+    border: 2px solid #666;
+    border-radius: 3px;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    padding: 0 5px;
+}
+#openParams:hover {
+    cursor: pointer;
+}
