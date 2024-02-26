@@ -28,6 +28,7 @@ window.onload = function() {
     const openParams = document.getElementById('openParams');
     openParams.addEventListener('click', function() {
         document.getElementById('apiParams').classList.remove('invisible');
+        document.getElementById('api-query').focus();
     });
 
     const runButton = document.getElementById('run-query');
@@ -62,6 +63,8 @@ window.onload = function() {
         document.getElementById('apiParams').classList.add('invisible');
     });
 
+    document.getElementById('api-key').focus();
+
     async function fetchImages(apiUrl) {
         try {
             const response = await fetch(apiUrl);
@@ -74,6 +77,8 @@ window.onload = function() {
         catch (error) {
             console.error('Error fetching images:', error);
             document.getElementById('apiParams').classList.add('error');
+            openParams.click();
+            document.getElementById('api-key').focus();
             return [];
         }
     }

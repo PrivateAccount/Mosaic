@@ -46,6 +46,15 @@ body {
 .help {
     margin: -30px 0 10px 0;
 }
+.help span {
+    margin: 0 0 0 122px;
+    color: brown;
+    font-weight: bold;
+    display: none;
+}
+#apiParams.error .help span {
+    display: inline;
+}
 .action {
     margin: 10px 0 0 0;
     text-align: right;
